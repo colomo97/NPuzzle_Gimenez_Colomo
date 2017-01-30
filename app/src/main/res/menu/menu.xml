@@ -2,15 +2,20 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <item android:id="@+id/item_sound"
+        android:title="Music"
+        android:icon="@drawable/volumen_up"
+        app:showAsAction="always"/>
+
     <item android:id="@+id/item_settings"
         android:title="Settings"
         android:icon="@drawable/settings"
         app:showAsAction="always" >
 
         <menu>
-            <item android:id="@+id/item_sound"
-                android:title="Sound"
-                android:icon="@drawable/volumen_up"
+            <item android:id="@+id/goBack"
+                android:title="Go Back"
+                android:icon="@drawable/exit"
                 app:showAsAction="always"/>
         </menu>
 

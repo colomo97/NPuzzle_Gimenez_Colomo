@@ -14,6 +14,7 @@ import android.widget.Toast;
 public class PrincipalActivity extends AppCompatActivity {
     static private boolean imageSelector = true;
     MediaPlayer musicaFons;
+    //jjajajasalu2
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -5,14 +5,17 @@ import android.app.IntentService;
 import android.app.Service;
 import android.content.Intent;
 import android.media.MediaPlayer;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Message;
+import android.view.View;
 
 /**
  * Created by miquel on 2/6/2017.
  */
 
 public class backgroundMusicService extends IntentService{
-     MediaPlayer musicaFons;
+    static MediaPlayer musicaFons;
 
     /**
      * Creates an IntentService.  Invoked by your subclass's constructor.
@@ -23,7 +26,6 @@ public class backgroundMusicService extends IntentService{
     }
 
     public IBinder onBind(Intent arg0) {
-
             return null;
         }
 
@@ -34,5 +36,18 @@ public class backgroundMusicService extends IntentService{
            musicaFons.setVolume(100, 100);
            musicaFons.start();
     }
+
+    public static void play(){
+        musicaFons.start();
+    }
+
+    public static void pause(){
+        musicaFons.pause();
+    }
+
+    public static void stop(){
+        musicaFons.stop();
+    }
+
 }
 

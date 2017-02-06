@@ -2,6 +2,8 @@ package dam2.fje.edu.npuzzle_gimenez_colomo;
 
 import android.content.Intent;
 import android.media.MediaPlayer;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -10,13 +12,16 @@ import android.view.MenuItem;
 
 public class PrincipalActivity extends AppCompatActivity {
     static private boolean imageSelector = true;
+    Intent svc;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_principal);
-        Intent svc = new Intent(this, backgroundMusicService.class);
+        svc = new Intent(this, backgroundMusicService.class);
         startService(svc);
+        backgroundMusicService.play();
     }
 
     /**
@@ -40,18 +45,17 @@ public class PrincipalActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        /*
         switch (item.getItemId()){
             case R.id.item_sound:
                 if(imageSelector){
                     item.setIcon(R.drawable.mute);
                     item.setTitle("Mute");
-                    stopService(svc);
+                    backgroundMusicService.pause();
                     imageSelector = false;
                 }else{
                     item.setIcon(R.drawable.volumen_up);
                     item.setTitle("Music");
-                    startService(svc);
+                    backgroundMusicService.play();
                     imageSelector = true;
                 }
                 return true;
@@ -63,22 +67,5 @@ public class PrincipalActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
-        */
-
-        return super.onOptionsItemSelected(item);
-
     }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        //stopService(svc);
-    }
-
-    @Override
-    public void onResume() {
-        super.onPause();
-        //startService(svc);
-
-        }
 }

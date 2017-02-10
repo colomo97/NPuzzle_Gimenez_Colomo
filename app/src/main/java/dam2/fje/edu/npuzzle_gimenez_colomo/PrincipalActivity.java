@@ -13,6 +13,7 @@ import android.view.MenuItem;
 public class PrincipalActivity extends AppCompatActivity {
     static private boolean imageSelector = true;
     Intent svc;
+    Boolean firstTime = false;
 
 
     @Override
@@ -21,7 +22,6 @@ public class PrincipalActivity extends AppCompatActivity {
         setContentView(R.layout.activity_principal);
         svc = new Intent(this, backgroundMusicService.class);
         startService(svc);
-        backgroundMusicService.play();
     }
 
     /**
@@ -68,4 +68,18 @@ public class PrincipalActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
+
+    @Override
+    public void onPause(){
+        backgroundMusicService.pause();
+    }
+
+    @Override
+    public void onResume(){
+        if(!firstTime){
+            firstTime=true;
+        }else backgroundMusicService.play();
+    }
+
+
 }

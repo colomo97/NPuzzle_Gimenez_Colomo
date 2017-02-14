@@ -5,6 +5,7 @@ import android.app.IntentService;
 import android.app.Service;
 import android.content.Intent;
 import android.media.MediaPlayer;
+import android.os.Binder;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
@@ -14,40 +15,32 @@ import android.view.View;
  * Created by miquel on 2/6/2017.
  */
 
-public class backgroundMusicService extends IntentService{
-    static MediaPlayer musicaFons;
+public class backgroundMusicService extends IntentService implements  MediaPlayer.OnPreparedListener{
+    MediaPlayer musicaFons ;
+    int currPosition = 0;
+    IBinder iBinder = new LocalBinder();
 
-    /**
-     * Creates an IntentService.  Invoked by your subclass's constructor.
-     *
-     */
-    public backgroundMusicService() {
-        super("backgroundMusicService");
-    }
+    public class LocalBinder extends Binder{public  backgroundMusicService getService(){return backgroundMusicService.this;}}
 
     public IBinder onBind(Intent arg0) {
-            return null;
-        }
+        musicaFons = MediaPlayer.create(this, R.raw.backgroundsound2);
+        musicaFons.setLooping(true);
+        musicaFons.setVolume(100, 100);
+        musicaFons.setOnPreparedListener(this);
+        return iBinder;
+    }
+
+    public backgroundMusicService() {super("backgroundMusicService");}
 
     @Override
-        protected void onHandleIntent(Intent intent) {
-           musicaFons = MediaPlayer.create(this, R.raw.backgroundsound2);
-           musicaFons.setLooping(true);
-           musicaFons.setVolume(100, 100);
-           musicaFons.start();
-    }
+    protected void onHandleIntent(Intent intent){}
 
-    public static void play(){
-        musicaFons.start();
-    }
+    @Override
+    public void onPrepared(MediaPlayer mp) {mp.start();}
 
-    public static void pause(){
-        musicaFons.pause();
-    }
+    public  void play(){musicaFons.start();}
 
-    public static void stop(){
-        musicaFons.stop();
-    }
+    public  void stop(){getCurrentPosition();musicaFons.pause();}
 
+    public  void getCurrentPosition(){currPosition = musicaFons.getCurrentPosition();}
 }
-

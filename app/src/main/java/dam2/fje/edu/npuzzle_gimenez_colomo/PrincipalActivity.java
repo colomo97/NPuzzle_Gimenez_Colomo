@@ -29,6 +29,7 @@ public class PrincipalActivity extends AppCompatActivity {
         setContentView(R.layout.activity_principal);
         Intent svc = new Intent(this, backgroundMusicService.class);
         bindService(svc, mConnection, Context.BIND_AUTO_CREATE);
+        //hey
     }
 
     @Override

@@ -11,13 +11,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+
 import dam2.fje.edu.npuzzle_gimenez_colomo.Controller.BackgroundMusicService;
 import dam2.fje.edu.npuzzle_gimenez_colomo.R;
 
-public class PrincipalActivity extends AppCompatActivity {
+public class PrincipalActivity extends AppCompatActivity implements View.OnClickListener{
     boolean mBound = false;
     boolean imageSelector = true;
     boolean firstTime = true;
+    Button startGame;
     Intent musicState;
     Menu menuOnRestart;
     BackgroundMusicService mService;
@@ -29,6 +33,8 @@ public class PrincipalActivity extends AppCompatActivity {
         setContentView(R.layout.activity_principal);
         Intent svc = new Intent(this, BackgroundMusicService.class);
         bindService(svc, mConnection, Context.BIND_AUTO_CREATE);
+        startGame = (Button) findViewById(R.id.bStart);
+        startGame.setOnClickListener(this);
     }
 
     @Override
@@ -104,4 +110,15 @@ public class PrincipalActivity extends AppCompatActivity {
     };
 
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case (R.id.bStart):
+                Intent intent = new Intent(this, PuzzleActivity.class);
+                startActivity(intent);
+                break;
+            default:
+                break;
+        }
+    }
 }

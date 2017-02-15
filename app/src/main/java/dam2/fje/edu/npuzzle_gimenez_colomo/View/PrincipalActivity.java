@@ -22,7 +22,6 @@ public class PrincipalActivity extends AppCompatActivity implements View.OnClick
     boolean imageSelector = true;
     boolean firstTime = true;
     Button startGame;
-    Intent musicState;
     Menu menuOnRestart;
     BackgroundMusicService mService;
 

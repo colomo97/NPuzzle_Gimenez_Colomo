@@ -1,19 +1,18 @@
-package dam2.fje.edu.npuzzle_gimenez_colomo;
+package dam2.fje.edu.npuzzle_gimenez_colomo.View;
 
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.media.MediaPlayer;
-import android.os.Handler;
 import android.os.IBinder;
-import android.os.Message;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.Toast;
+import dam2.fje.edu.npuzzle_gimenez_colomo.Controller.BackgroundMusicService;
+import dam2.fje.edu.npuzzle_gimenez_colomo.R;
 
 public class PrincipalActivity extends AppCompatActivity {
     boolean mBound = false;
@@ -21,15 +20,15 @@ public class PrincipalActivity extends AppCompatActivity {
     boolean firstTime = true;
     Intent musicState;
     Menu menuOnRestart;
-    backgroundMusicService mService;
+    BackgroundMusicService mService;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_principal);
-        Intent svc = new Intent(this, backgroundMusicService.class);
+        Intent svc = new Intent(this, BackgroundMusicService.class);
         bindService(svc, mConnection, Context.BIND_AUTO_CREATE);
-        //hey
     }
 
     @Override
@@ -42,7 +41,6 @@ public class PrincipalActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        musicState = new Intent(this, backgroundMusicService.class);
         switch (item.getItemId()){
             case R.id.item_sound:
                 if(imageSelector){
@@ -95,7 +93,7 @@ public class PrincipalActivity extends AppCompatActivity {
     private ServiceConnection mConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName className, IBinder service) {
-            backgroundMusicService.LocalBinder binder = (backgroundMusicService.LocalBinder) service;
+            BackgroundMusicService.LocalBinder binder = (BackgroundMusicService.LocalBinder) service;
             mService = binder.getService();
             mBound = true;
         }
@@ -104,4 +102,6 @@ public class PrincipalActivity extends AppCompatActivity {
             mBound = false;
         }
     };
+
+
 }

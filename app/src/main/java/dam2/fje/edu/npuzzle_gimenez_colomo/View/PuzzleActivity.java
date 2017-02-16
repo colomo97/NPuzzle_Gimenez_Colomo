@@ -15,6 +15,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
@@ -26,7 +27,7 @@ import android.widget.Toast;
 import dam2.fje.edu.npuzzle_gimenez_colomo.Controller.BackgroundMusicService;
 import dam2.fje.edu.npuzzle_gimenez_colomo.R;
 
-public class PuzzleActivity extends AppCompatActivity implements View.OnClickListener{
+public class PuzzleActivity extends AppCompatActivity{
     Integer[] imageIDs = {
             R.drawable.img01,
             R.drawable.img02,
@@ -44,6 +45,9 @@ public class PuzzleActivity extends AppCompatActivity implements View.OnClickLis
     boolean firstTime = true;
     boolean mBound = false;
     Menu menuOnRestart;
+    ImageAdapter im;
+    ViewParent pare;
+    int posicioActual;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -51,15 +55,31 @@ public class PuzzleActivity extends AppCompatActivity implements View.OnClickLis
         setContentView(R.layout.activity_puzzle);
         Intent svc = new Intent(this, BackgroundMusicService.class);
         grid = (GridView) findViewById(R.id.gridview);
-        ImageAdapter im = new ImageAdapter(this);
+        im = new ImageAdapter(this);
         grid.setAdapter(im);
+        grid.setOnItemClickListener(new OnItemClickListener()
+        {
+            public void onItemClick(AdapterView<?> parent,
+                                    View v, int position, long id)
+            {
+                posicioActual = position;
+                comprovaDisponible(v);
+                //Toast.makeText(getBaseContext(), "Imatge " + (position + 1) + " seleccionada", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
-    @Override
-    public void onClick(View v) {
-        switch(v.getId()){
+    public void comprovaDisponible(View v){
+        int columna = posicioActual % 3;
+        int fila = posicioActual / 3;
 
+        int columnaInvisible = 8 % 3;
+        int filaInvisible = 8 / 3;
+
+        if ((columna == columnaInvisible && fila-1 == columnaInvisible || columna == columnaInvisible && fila+1 == columnaInvisible) || (columna-1 == columnaInvisible && fila == columnaInvisible || columna+1 == columnaInvisible && fila == columnaInvisible)){
+            Toast.makeText(this, "DISPONIBLE", Toast.LENGTH_SHORT).show();
         }
+
     }
 
     public class ImageAdapter extends BaseAdapter{
@@ -86,6 +106,7 @@ public class PuzzleActivity extends AppCompatActivity implements View.OnClickLis
 
         //---returns an ImageView view---
         public View getView(int position, View convertView, ViewGroup parent){
+            pare = parent;
             ImageView imageView;
             if (convertView == null) {
                 imageView = new ImageView(context);

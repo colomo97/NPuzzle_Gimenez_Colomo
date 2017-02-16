@@ -44,6 +44,7 @@ public class PrincipalActivity extends AppCompatActivity implements View.OnClick
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu, menu);
         this.menuOnRestart = menu;
+        //hey
         return super.onCreateOptionsMenu(menu);
     }
 

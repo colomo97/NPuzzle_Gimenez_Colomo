@@ -11,7 +11,7 @@ import android.util.Log;
 import dam2.fje.edu.npuzzle_gimenez_colomo.R;
 
 /**
- * Created by miquel on 2/6/2017.
+ * Created by miquel gimenez on 2/6/2017.
  */
 
 public class BackgroundMusicService extends IntentService implements  MediaPlayer.OnPreparedListener{

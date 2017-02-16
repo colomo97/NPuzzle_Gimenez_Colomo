@@ -9,12 +9,14 @@ import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.content.Context;
 import android.os.IBinder;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
@@ -38,21 +40,23 @@ public class PuzzleActivity extends AppCompatActivity implements View.OnClickLis
             R.drawable.img08,
             R.drawable.img09
     };
-    BackgroundMusicService mService;
     boolean imageSelector = true;
     private GridView grid;
     boolean firstTime = true;
     boolean mBound = false;
-    Menu menuOnRestart;
+    static Menu menuOnRestart;
+    BackgroundMusicService mService;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_puzzle);
-        Intent svc = new Intent(this, BackgroundMusicService.class);
         grid = (GridView) findViewById(R.id.gridview);
         ImageAdapter im = new ImageAdapter(this);
         grid.setAdapter(im);
+        mService = PrincipalActivity.getmService();
+        ActionBar actionBar =getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(false);
     }
 
     @Override
@@ -109,6 +113,7 @@ public class PuzzleActivity extends AppCompatActivity implements View.OnClickLis
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu, menu);
         this.menuOnRestart = menu;
+        if(PrincipalActivity.checkMusic()){menuOnRestart.getItem(0).setIcon(R.drawable.mute);}
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -147,7 +152,6 @@ public class PuzzleActivity extends AppCompatActivity implements View.OnClickLis
             unbindService(mConnection);
             mBound = false;
         }
-        menuOnRestart.getItem(0).setIcon(R.drawable.mute);
         mService.stop();
     }
 
@@ -158,8 +162,9 @@ public class PuzzleActivity extends AppCompatActivity implements View.OnClickLis
         if(firstTime){
             firstTime = false;
         }else{
-            menuOnRestart.getItem(0).setIcon(R.drawable.volumen_up);
-            mService.play();
+            if(menuOnRestart.getItem(0).getTitle()=="Mute"){
+                mService.stop();
+            }else mService.play();
         }
     }
 
@@ -176,4 +181,15 @@ public class PuzzleActivity extends AppCompatActivity implements View.OnClickLis
             mBound = false;
         }
     };
+
+    public View getActionBarView() {
+        Window window = getWindow();
+        View v = window.getDecorView();
+        int resId = getResources().getIdentifier("action_bar_container", "id", "android");
+        return v.findViewById(resId);
+    }
+    public static  boolean checkMusic(){
+        if(menuOnRestart.getItem(0).getTitle()=="Mute") return true;
+        else return false;
+    }
 }

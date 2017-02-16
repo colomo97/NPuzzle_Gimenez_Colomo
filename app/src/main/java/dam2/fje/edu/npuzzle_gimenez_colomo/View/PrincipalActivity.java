@@ -22,9 +22,10 @@ public class PrincipalActivity extends AppCompatActivity implements View.OnClick
     boolean mBound = false;
     boolean imageSelector = true;
     boolean firstTime = true;
+    boolean checkmService;
     Button startGame;
-    Menu menuOnRestart;
-    BackgroundMusicService mService;
+    static Menu menuOnRestart;
+    static BackgroundMusicService mService;
 
 
     @Override
@@ -35,6 +36,7 @@ public class PrincipalActivity extends AppCompatActivity implements View.OnClick
         bindService(svc, mConnection, Context.BIND_AUTO_CREATE);
         startGame = (Button) findViewById(R.id.bStart);
         startGame.setOnClickListener(this);
+        checkmService = true;
     }
 
     @Override
@@ -80,8 +82,11 @@ public class PrincipalActivity extends AppCompatActivity implements View.OnClick
             unbindService(mConnection);
             mBound = false;
         }
-        menuOnRestart.getItem(0).setIcon(R.drawable.mute);
-        mService.stop();
+        if(checkmService ==true){
+            menuOnRestart.getItem(0).setIcon(R.drawable.mute);
+            mService.stop();
+        }
+
     }
 
 
@@ -91,10 +96,12 @@ public class PrincipalActivity extends AppCompatActivity implements View.OnClick
         if(firstTime){
             firstTime = false;
         }else{
-            menuOnRestart.getItem(0).setIcon(R.drawable.volumen_up);
-            mService.play();
-        }
+              if(menuOnRestart.getItem(0).getTitle()=="Mute"){
+              mService.stop();
+              }else mService.play();
+            }
     }
+
 
 
     private ServiceConnection mConnection = new ServiceConnection() {
@@ -116,6 +123,7 @@ public class PrincipalActivity extends AppCompatActivity implements View.OnClick
         switch (v.getId()){
 
             case (R.id.bStart):
+                checkmService = false;
                 Intent intent = new Intent(this, PuzzleActivity.class);
                 startActivity(intent);
                 break;
@@ -125,6 +133,13 @@ public class PrincipalActivity extends AppCompatActivity implements View.OnClick
         }
     }
 
+    public static  boolean checkMusic(){
+        if(menuOnRestart.getItem(0).getTitle()=="Mute") return true;
+        else return false;
+    }
+    public static BackgroundMusicService getmService(){
+        return  mService;
+    }
     private AudioManager.OnAudioFocusChangeListener mAudioFocusListener = new AudioManager.OnAudioFocusChangeListener() {
         public void onAudioFocusChange(int focusChange) {
 

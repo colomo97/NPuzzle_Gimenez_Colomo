@@ -2,9 +2,11 @@ package dam2.fje.edu.npuzzle_gimenez_colomo.Controller;
 
 import android.app.IntentService;
 import android.content.Intent;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Binder;
 import android.os.IBinder;
+import android.util.Log;
 
 import dam2.fje.edu.npuzzle_gimenez_colomo.R;
 
@@ -13,6 +15,7 @@ import dam2.fje.edu.npuzzle_gimenez_colomo.R;
  */
 
 public class BackgroundMusicService extends IntentService implements  MediaPlayer.OnPreparedListener{
+    private String LOG = "dam2.fje.edu.npuzzle_gimenez_colomo";
     MediaPlayer musicaFons ;
     int currPosition = 0;
     IBinder iBinder = new LocalBinder();
@@ -38,7 +41,11 @@ public class BackgroundMusicService extends IntentService implements  MediaPlaye
 
     public  void play(){musicaFons.start();}
 
-    public  void stop(){getCurrentPosition();musicaFons.pause();}
+    public  void stop(){musicaFons.pause();}
 
-    public  void getCurrentPosition(){currPosition = musicaFons.getCurrentPosition();}
+    public boolean isPlating(){
+        if(musicaFons.isPlaying()){
+            return true;
+        }else return false;
+    }
 }

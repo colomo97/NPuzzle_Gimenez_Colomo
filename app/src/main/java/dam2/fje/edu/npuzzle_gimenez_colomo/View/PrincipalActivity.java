@@ -4,6 +4,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.media.AudioManager;
 import android.os.IBinder;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
@@ -71,6 +72,7 @@ public class PrincipalActivity extends AppCompatActivity implements View.OnClick
     }
 
 
+
     @Override
     protected void onStop() {
         super.onStop();
@@ -112,12 +114,30 @@ public class PrincipalActivity extends AppCompatActivity implements View.OnClick
     @Override
     public void onClick(View v) {
         switch (v.getId()){
+
             case (R.id.bStart):
                 Intent intent = new Intent(this, PuzzleActivity.class);
                 startActivity(intent);
                 break;
+
             default:
                 break;
         }
     }
+
+    private AudioManager.OnAudioFocusChangeListener mAudioFocusListener = new AudioManager.OnAudioFocusChangeListener() {
+        public void onAudioFocusChange(int focusChange) {
+
+            switch (focusChange) {
+                case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT:
+                case AudioManager.AUDIOFOCUS_LOSS:
+                    if (mService.isPlating()){mService.stop();}
+                    break;
+
+                case AudioManager.AUDIOFOCUS_GAIN:
+                    mService.play();
+                    break;
+            }
+        }
+    };
 }

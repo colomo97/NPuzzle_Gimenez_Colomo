@@ -51,12 +51,8 @@ public class PuzzleActivity extends AppCompatActivity implements View.OnClickLis
         setContentView(R.layout.activity_puzzle);
         Intent svc = new Intent(this, BackgroundMusicService.class);
         grid = (GridView) findViewById(R.id.gridview);
-        grid.setAdapter(new ImageAdapter(this));
-        grid.setOnItemClickListener(new OnItemClickListener(){
-            public void onItemClick(AdapterView<?> parent,View v, int position, long id){
-                   setImageNotVisible(parent);
-            }
-        });
+        ImageAdapter im = new ImageAdapter(this);
+        grid.setAdapter(im);
     }
 
     @Override
@@ -99,6 +95,9 @@ public class PuzzleActivity extends AppCompatActivity implements View.OnClickLis
             } else {
                 imageView = (ImageView) convertView;
             }
+            if(position==8){
+                imageView.setVisibility(View.GONE);
+            }
             imageView.setImageResource(imageIDs[position]);
             return imageView;
         }
@@ -139,9 +138,6 @@ public class PuzzleActivity extends AppCompatActivity implements View.OnClickLis
         }
     }
 
-    public static void setImageNotVisible(AdapterView<?> parent){
-        parent.getChildAt(8).setVisibility(View.GONE);
-    }
 
 
     @Override

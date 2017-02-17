@@ -16,6 +16,7 @@ import android.view.Display;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
@@ -23,15 +24,14 @@ import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import dam2.fje.edu.npuzzle_gimenez_colomo.Controller.BackgroundMusicService;
 import dam2.fje.edu.npuzzle_gimenez_colomo.R;
 
-public class PuzzleActivity extends AppCompatActivity implements View.OnClickListener{
+public class PuzzleActivity extends AppCompatActivity implements View.OnTouchListener{
     Integer[] imageIDs = {
             R.drawable.img01,
             R.drawable.img02,
@@ -43,6 +43,9 @@ public class PuzzleActivity extends AppCompatActivity implements View.OnClickLis
             R.drawable.img08,
             R.drawable.img09
     };
+
+    ImageView solucio;
+    Button btnSolucio;
     boolean imageSelector = true;
     GridView grid;
     boolean firstTime = true;
@@ -67,7 +70,10 @@ public class PuzzleActivity extends AppCompatActivity implements View.OnClickLis
         int height = size.y;
 
         //Toast.makeText(this, "x: " + String.valueOf(width) + "; y: " + String.valueOf(height), Toast.LENGTH_SHORT).show();
-
+        btnSolucio = (Button) findViewById(R.id.btnSolucio);
+        btnSolucio.setOnTouchListener(this);
+        solucio = (ImageView) findViewById(R.id.imageView);
+        solucio.setVisibility(View.GONE);
         grid = (GridView) findViewById(R.id.gridview);
         im = new ImageAdapter(this);
         grid.setAdapter(im);
@@ -120,9 +126,29 @@ public class PuzzleActivity extends AppCompatActivity implements View.OnClickLis
 
     }
 
+    /*
     @Override
     public void onClick(View v) {
+        if (solucio.getVisibility() == View.GONE){
+            solucio.setVisibility(View.VISIBLE);
+        } else {
+            solucio.setVisibility(View.GONE);
+        }
+    }
+    */
 
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        switch (event.getAction()){
+            case MotionEvent.ACTION_DOWN:
+                solucio.setVisibility(View.VISIBLE);
+                break;
+            case MotionEvent.ACTION_UP:
+                solucio.setVisibility(View.GONE);
+                break;
+        }
+
+        return false;
     }
 
     public class ImageAdapter extends BaseAdapter{

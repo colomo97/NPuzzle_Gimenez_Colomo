@@ -25,6 +25,7 @@ public class PrincipalActivity extends AppCompatActivity implements View.OnClick
     boolean checkmService;
     Button startGame;
     static Menu menuOnRestart;
+    boolean isFirstTimeService = true;
     static BackgroundMusicService mService;
 
 
@@ -34,6 +35,7 @@ public class PrincipalActivity extends AppCompatActivity implements View.OnClick
         setContentView(R.layout.activity_principal);
         Intent svc = new Intent(this, BackgroundMusicService.class);
         bindService(svc, mConnection, Context.BIND_AUTO_CREATE);
+
         startGame = (Button) findViewById(R.id.bStart);
         startGame.setOnClickListener(this);
         checkmService = true;
@@ -44,7 +46,6 @@ public class PrincipalActivity extends AppCompatActivity implements View.OnClick
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu, menu);
         this.menuOnRestart = menu;
-        //hey
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -84,7 +85,6 @@ public class PrincipalActivity extends AppCompatActivity implements View.OnClick
             mBound = false;
         }
         if(checkmService ==true){
-            menuOnRestart.getItem(0).setIcon(R.drawable.mute);
             mService.stop();
         }
 
@@ -97,27 +97,11 @@ public class PrincipalActivity extends AppCompatActivity implements View.OnClick
         if(firstTime){
             firstTime = false;
         }else{
-              if(menuOnRestart.getItem(0).getTitle()=="Mute"){
-              mService.stop();
-              }else mService.play();
-            }
+            if(menuOnRestart.getItem(0).getTitle()=="Mute"){
+                mService.stop();
+            }else mService.play();
+        }
     }
-
-
-
-    private ServiceConnection mConnection = new ServiceConnection() {
-        @Override
-        public void onServiceConnected(ComponentName className, IBinder service) {
-            BackgroundMusicService.LocalBinder binder = (BackgroundMusicService.LocalBinder) service;
-            mService = binder.getService();
-            mBound = true;
-        }
-        @Override
-        public void onServiceDisconnected(ComponentName arg0) {
-            mBound = false;
-        }
-    };
-
 
     @Override
     public void onClick(View v) {
@@ -138,6 +122,20 @@ public class PrincipalActivity extends AppCompatActivity implements View.OnClick
         if(menuOnRestart.getItem(0).getTitle()=="Mute") return true;
         else return false;
     }
+
+    private ServiceConnection mConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName className, IBinder service) {
+            BackgroundMusicService.LocalBinder binder = (BackgroundMusicService.LocalBinder) service;
+            mService = binder.getService();
+            mBound = true;
+        }
+        @Override
+        public void onServiceDisconnected(ComponentName arg0) {
+            mBound = false;
+        }
+    };
+
     public static BackgroundMusicService getmService(){
         return  mService;
     }
@@ -156,4 +154,10 @@ public class PrincipalActivity extends AppCompatActivity implements View.OnClick
             }
         }
     };
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
 }

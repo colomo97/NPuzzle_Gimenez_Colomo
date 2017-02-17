@@ -13,34 +13,33 @@
 
 
     <TextView
-        android:text="TextView"
+        android:text="\nBenvinguts a l’aplicació de NPUZZLE.\nSi us plau, seleccioneu una imatge fent click al icona de sota i després podeu iniciar el PUZZLE."
         android:layout_gravity="center_vertical|right"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/textView"
-        tools:text="Benvinguts a l’aplicació de NPUZZLE. Si us plau, seleccioneu una imatge fent click al icona de sota i després podeu iniciar l’aplicació. Gracies. "
+        android:id="@+id/txtPresApp"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
         android:clickable="false"
-        android:textAlignment="viewStart"
         android:textAllCaps="false" />
-
-    <Button
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginEnd="34dp"
-        android:id="@+id/btOpenImage"
-        android:background="@mipmap/ic_launcher"
-        android:layout_alignParentBottom="true"
-        android:layout_toStartOf="@+id/bStart" />
 
     <Button
         android:id="@+id/bStart"
         android:background="@mipmap/arrow"
+        android:elevation="0dp"
         android:layout_width="50dp"
         android:layout_height="50dp"
+        android:layout_alignBaseline="@+id/btOpenImage"
+        android:layout_alignBottom="@+id/btOpenImage"
+        android:layout_alignParentEnd="true" />
+
+    <Button
+        android:id="@+id/btOpenImage"
+        android:background="@mipmap/galery_image"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="11dp" />
+        android:layout_toStartOf="@+id/bStart"
+        android:layout_marginEnd="12dp" />
 
 </RelativeLayout>

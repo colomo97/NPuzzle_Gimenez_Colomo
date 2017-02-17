@@ -7,6 +7,7 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.graphics.Point;
+import android.media.AudioManager;
 import android.os.Bundle;
 import android.content.Context;
 import android.os.IBinder;
@@ -27,6 +28,8 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import dam2.fje.edu.npuzzle_gimenez_colomo.Controller.BackgroundMusicService;
 import dam2.fje.edu.npuzzle_gimenez_colomo.R;
@@ -43,6 +46,7 @@ public class PuzzleActivity extends AppCompatActivity implements View.OnTouchLis
             R.drawable.img08,
             R.drawable.img09
     };
+    int moveSound = 1;
 
     ImageView solucio;
     Button btnSolucio;
@@ -54,6 +58,7 @@ public class PuzzleActivity extends AppCompatActivity implements View.OnTouchLis
     BackgroundMusicService mService;
     ImageAdapter im;
     ViewParent pare;
+    boolean checkmService;
     int posicioInvisible = 8;
 
     @Override
@@ -61,6 +66,7 @@ public class PuzzleActivity extends AppCompatActivity implements View.OnTouchLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_puzzle);
         Intent svc = new Intent(this, BackgroundMusicService.class);
+        checkmService = true;
 
         //Obtenir dimensions imatges
         Display display = getWindowManager().getDefaultDisplay();
@@ -104,6 +110,19 @@ public class PuzzleActivity extends AppCompatActivity implements View.OnTouchLis
                     int posicioAuxiliar = ((CustomImageView) v).getPosicioActual();
                     ((CustomImageView) v).setPosicioActual(posicioInvisible);
                     posicioInvisible = posicioAuxiliar;
+                    switch (moveSound){
+                        case 1:
+                            mService.playMoveSound();
+                            moveSound = 2;
+                        break;
+
+                        case 2:
+                            mService.playMoveSound2();
+                            moveSound = 1;
+                         break;
+
+                    }
+
                 }
             }
         });
@@ -223,6 +242,7 @@ public class PuzzleActivity extends AppCompatActivity implements View.OnTouchLis
                 return true;
 
             case R.id.goBack:
+                mService.setPosition();
                 finish();
                 return  true;
 
@@ -240,7 +260,9 @@ public class PuzzleActivity extends AppCompatActivity implements View.OnTouchLis
             unbindService(mConnection);
             mBound = false;
         }
-        mService.stop();
+        if(checkmService ==true){
+            mService.stop();
+        }
     }
 
 
@@ -276,8 +298,28 @@ public class PuzzleActivity extends AppCompatActivity implements View.OnTouchLis
         int resId = getResources().getIdentifier("action_bar_container", "id", "android");
         return v.findViewById(resId);
     }
-    public static  boolean checkMusic(){
-        if(menuOnRestart.getItem(0).getTitle()=="Mute") return true;
-        else return false;
+
+
+    @Override
+    public void onBackPressed() {
+        mService.setPosition();
+        Intent intent = new Intent(this, PrincipalActivity.class);
+        startActivity(intent);
     }
+
+    private AudioManager.OnAudioFocusChangeListener mAudioFocusListener = new AudioManager.OnAudioFocusChangeListener() {
+        public void onAudioFocusChange(int focusChange) {
+
+            switch (focusChange) {
+                case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT:
+                case AudioManager.AUDIOFOCUS_LOSS:
+                    if (mService.isPlating()){mService.stop();}
+                    break;
+
+                case AudioManager.AUDIOFOCUS_GAIN:
+                    mService.play();
+                    break;
+            }
+        }
+    };
 }

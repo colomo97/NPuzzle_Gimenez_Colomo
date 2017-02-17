@@ -21,26 +21,7 @@
         android:name="dam2.fje.edu.npuzzle_gimenez_colomo.View.PrincipalFragment"
         android:id="@+id/fragment"
         tools:layout="@layout/fragments_layout"
-        android:layout_marginBottom="96dp"
-        android:layout_alignParentBottom="true"
+        android:layout_alignParentTop="true"
         android:layout_alignParentStart="true" />
 
-    <Button
-        android:text="Mostrar solució"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="115dp"
-        android:id="@+id/btnSolucio"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true" />
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:srcCompat="@drawable/solucio"
-        android:id="@+id/imageView"
-        android:layout_marginStart="35dp"
-        android:layout_alignTop="@+id/btnSolucio"
-        android:layout_toEndOf="@+id/btnSolucio"
-        android:layout_marginTop="19dp" />
 </RelativeLayout>

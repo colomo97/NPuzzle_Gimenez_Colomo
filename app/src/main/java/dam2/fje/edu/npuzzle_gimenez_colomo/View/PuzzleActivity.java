@@ -76,10 +76,10 @@ public class PuzzleActivity extends AppCompatActivity implements View.OnTouchLis
         int height = size.y;
 
         //Toast.makeText(this, "x: " + String.valueOf(width) + "; y: " + String.valueOf(height), Toast.LENGTH_SHORT).show();
-        btnSolucio = (Button) findViewById(R.id.btnSolucio);
-        btnSolucio.setOnTouchListener(this);
-        solucio = (ImageView) findViewById(R.id.imageView);
-        solucio.setVisibility(View.GONE);
+        //btnSolucio = (Button) findViewById(R.id.btnSolucio);
+        //btnSolucio.setOnTouchListener(this);
+        //solucio = (ImageView) findViewById(R.id.imageView);
+        //solucio.setVisibility(View.GONE);
         grid = (GridView) findViewById(R.id.gridview);
         im = new ImageAdapter(this);
         grid.setAdapter(im);
@@ -156,8 +156,10 @@ public class PuzzleActivity extends AppCompatActivity implements View.OnTouchLis
     }
     */
 
+
     @Override
     public boolean onTouch(View v, MotionEvent event) {
+        /*
         switch (event.getAction()){
             case MotionEvent.ACTION_DOWN:
                 solucio.setVisibility(View.VISIBLE);
@@ -166,6 +168,7 @@ public class PuzzleActivity extends AppCompatActivity implements View.OnTouchLis
                 solucio.setVisibility(View.GONE);
                 break;
         }
+        */
 
         return false;
     }
@@ -198,7 +201,7 @@ public class PuzzleActivity extends AppCompatActivity implements View.OnTouchLis
             CustomImageView imageView;
             if (convertView == null) {
                 imageView = new CustomImageView(context, position);
-                imageView.setLayoutParams(new GridView.LayoutParams(415, 415));
+                imageView.setLayoutParams(new GridView.LayoutParams(300, 300));
                 imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
                 imageView.setPadding(10, 10, 10, 10);
             } else {

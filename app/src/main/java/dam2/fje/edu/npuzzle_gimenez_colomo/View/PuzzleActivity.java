@@ -31,6 +31,13 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
+
 import dam2.fje.edu.npuzzle_gimenez_colomo.Controller.BackgroundMusicService;
 import dam2.fje.edu.npuzzle_gimenez_colomo.R;
 
@@ -60,6 +67,7 @@ public class PuzzleActivity extends AppCompatActivity implements View.OnTouchLis
     ViewParent pare;
     boolean checkmService;
     int posicioInvisible = 8;
+    List<Integer> posicionsAleatoriesList;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -67,6 +75,11 @@ public class PuzzleActivity extends AppCompatActivity implements View.OnTouchLis
         setContentView(R.layout.activity_puzzle);
         Intent svc = new Intent(this, BackgroundMusicService.class);
         checkmService = true;
+
+        //Creacio aleatoris
+        Integer[] posicionsAleatories = {0, 1, 2, 3, 4, 5, 6, 7, 8};
+        posicionsAleatoriesList = new ArrayList<Integer>(Arrays.asList(posicionsAleatories));
+        Collections.shuffle(posicionsAleatoriesList);
 
         //Obtenir dimensions imatges
         Display display = getWindowManager().getDefaultDisplay();
@@ -201,7 +214,7 @@ public class PuzzleActivity extends AppCompatActivity implements View.OnTouchLis
             CustomImageView imageView;
             if (convertView == null) {
                 imageView = new CustomImageView(context, position);
-                imageView.setLayoutParams(new GridView.LayoutParams(300, 300));
+                imageView.setLayoutParams(new GridView.LayoutParams(410, 410));
                 imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
                 imageView.setPadding(10, 10, 10, 10);
             } else {
@@ -210,13 +223,13 @@ public class PuzzleActivity extends AppCompatActivity implements View.OnTouchLis
             if(position==8){
                 imageView.setVisibility(View.GONE);
             }
-            imageView.setPosicioCorrecte(position);
+
+            imageView.setPosicioCorrecte(posicionsAleatoriesList.get(position));
             imageView.setPosicioActual(position);
-            imageView.setImageResource(imageIDs[position]);
+            imageView.setImageResource(imageIDs[posicionsAleatoriesList.get(position)]);
             return imageView;
         }
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

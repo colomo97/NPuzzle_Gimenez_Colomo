@@ -192,7 +192,9 @@ public class PuzzleActivity extends AppCompatActivity implements View.OnTouchLis
             }
         }
         if (totsSolucionats==8){
-            Toast.makeText(getApplicationContext(), "Molt Bé! Puzzle Solucionat!", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getApplicationContext(), "Molt Bé! Puzzle Solucionat!", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(this, SolucioActivity.class);
+            startActivity(intent);
         }
     }
 
@@ -313,7 +315,7 @@ public class PuzzleActivity extends AppCompatActivity implements View.OnTouchLis
             case R.id.goBack:
                 mService.setPosition();
                 finish();
-                return  true;
+                return true;
 
             default:
                 return super.onOptionsItemSelected(item);

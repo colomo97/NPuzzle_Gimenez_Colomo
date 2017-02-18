@@ -21,6 +21,10 @@
             android:configChanges="orientation"
             android:screenOrientation="portrait"/>
 
+        <activity android:name=".View.SolucioActivity" android:parentActivityName=".View.PuzzleActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
+
         <service android:name=".Controller.BackgroundMusicService"/>
     </application>
 

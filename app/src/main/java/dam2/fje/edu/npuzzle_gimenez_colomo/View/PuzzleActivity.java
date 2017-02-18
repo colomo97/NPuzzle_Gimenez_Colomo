@@ -137,13 +137,66 @@ public class PuzzleActivity extends AppCompatActivity implements View.OnTouchLis
                     }
 
                 }
+                System.out.println("POSICIO ACTUAL: " + ((CustomImageView) v).getPosicioActual() + " POSICIO CORRECTE: " + ((CustomImageView) v).getPosicioCorrecte());
+                System.out.println("POSICIO INVISIBLE: " + posicioInvisible);
+                if (((CustomImageView) v).getPosicioActual() == ((CustomImageView) v).getPosicioCorrecte()){
+                    Toast.makeText(getApplicationContext(), "Posicio correcte: " + ((CustomImageView) v).getPosicioActual(), Toast.LENGTH_SHORT).show();
+                }
+                comprovaSolucio();
+            }
+        });
+
+        grid.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener()
+        {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View v, int position, long id) {
+                ImageView invisible = (ImageView)parent.getChildAt(8);
+
+                float xActual = v.getX();
+                float yActual = v.getY();
+                float xInvisible = invisible.getX();
+                float yInvisible = invisible.getY();
+                v.setX(xInvisible);
+                v.setY(yInvisible);
+                invisible.setX(xActual);
+                invisible.setY(yActual);
+                int posicioAuxiliar = ((CustomImageView) v).getPosicioActual();
+                ((CustomImageView) v).setPosicioActual(posicioInvisible);
+                posicioInvisible = posicioAuxiliar;
+                switch (moveSound){
+                    case 1:
+                        mService.playMoveSound();
+                        moveSound = 2;
+                        break;
+
+                    case 2:
+                        mService.playMoveSound2();
+                        moveSound = 1;
+                        break;
+
+                }
+
+                comprovaSolucio();
+
+                return true;
             }
         });
     }
 
+    public void comprovaSolucio(){
+        int totsSolucionats = 0;
+        for (int i = 0; i<grid.getChildCount(); i++){
+            CustomImageView imatge  = (CustomImageView) grid.getChildAt(i);
+            if (imatge.getPosicioActual() == imatge.getPosicioCorrecte()){
+                totsSolucionats++;
+            }
+        }
+        if (totsSolucionats==8){
+            Toast.makeText(getApplicationContext(), "Molt Bé! Puzzle Solucionat!", Toast.LENGTH_SHORT).show();
+        }
+    }
+
     public boolean comprovaDisponible(CustomImageView v){
-        System.out.println("POSICIO ACTUAL: " + v.getPosicioActual() + " POSICIO CORRECTE: " + v.getPosicioCorrecte());
-        System.out.println("POSICIO INVISIBLE: " + posicioInvisible);
         int columna = v.getPosicioActual() % 3;
         int fila = v.getPosicioActual() / 3;
 

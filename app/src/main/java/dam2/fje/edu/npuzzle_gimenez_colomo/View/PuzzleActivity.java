@@ -6,6 +6,8 @@ package dam2.fje.edu.npuzzle_gimenez_colomo.View;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.Point;
 import android.media.AudioManager;
 import android.os.Bundle;
@@ -42,39 +44,36 @@ import dam2.fje.edu.npuzzle_gimenez_colomo.Controller.BackgroundMusicService;
 import dam2.fje.edu.npuzzle_gimenez_colomo.R;
 
 public class PuzzleActivity extends AppCompatActivity implements View.OnTouchListener{
-    Integer[] imageIDs = {
-            R.drawable.img01,
-            R.drawable.img02,
-            R.drawable.img03,
-            R.drawable.img04,
-            R.drawable.img05,
-            R.drawable.img06,
-            R.drawable.img07,
-            R.drawable.img08,
-            R.drawable.img09
-    };
-    int moveSound = 1;
-
+    PuzzleActivity(){}
+    Integer[] imageIDs = {R.drawable.img01, R.drawable.img02,R.drawable.img03,R.drawable.img04,R.drawable.img05,R.drawable.img06,R.drawable.img07,R.drawable.img08, R.drawable.img09};
     ImageView solucio;
     Button btnSolucio;
-    boolean imageSelector = true;
     GridView grid;
-    boolean firstTime = true;
-    boolean mBound = false;
-    static Menu menuOnRestart;
     BackgroundMusicService mService;
     ImageAdapter im;
     ViewParent pare;
-    boolean checkmService;
-    int posicioInvisible = 8;
     List<Integer> posicionsAleatoriesList;
+    int posicioInvisible = 8;
+    boolean checkmService;
+    boolean imageSelector = true;
+    boolean firstTime = true;
+    boolean mBound = false;
+    static Menu menuOnRestart;
+    /**
+    Bitmap originalBm = BitmapFactory.decodeFile("fileUrl"); // Let's say this bitmap is 300 x 600 pixels
+    Bitmap bm1 = Bitmap.createBitmap(originalBm, 0, 0, originalBm.getWidth(), (originalBm.getHeight() / 2));
+    Bitmap bm2 = Bitmap.createBitmap(originalBm, 0, (originalBm.getHeight() / 2), originalBm.getWidth(), (originalBm.getHeight() / 2));
+     */
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_puzzle);
         Intent svc = new Intent(this, BackgroundMusicService.class);
+        bindService(svc, mConnection, Context.BIND_AUTO_CREATE);
         checkmService = true;
+
+
 
         //Creacio aleatoris
         Integer[] posicionsAleatories = {0, 1, 2, 3, 4, 5, 6, 7, 8};
@@ -91,26 +90,25 @@ public class PuzzleActivity extends AppCompatActivity implements View.OnTouchLis
         //Toast.makeText(this, "x: " + String.valueOf(width) + "; y: " + String.valueOf(height), Toast.LENGTH_SHORT).show();
         btnSolucio = (Button) findViewById(R.id.btnSolucio);
         btnSolucio.setOnTouchListener(this);
-        solucio = (ImageView) findViewById(R.id.imageView);
+        solucio = (ImageView) findViewById(R.id.imageSolucio);
+        solucio.setImageBitmap(PrincipalActivity.getBitmap());
+        solucio.setBackgroundColor(Color.BLACK);
         solucio.setVisibility(View.GONE);
+
+
         grid = (GridView) findViewById(R.id.gridview);
         im = new ImageAdapter(this);
         grid.setAdapter(im);
-        mService = PrincipalActivity.getmService();
         ActionBar actionBar =getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(false);
         grid.setOnItemClickListener(new OnItemClickListener()
         {
-            public void onItemClick(AdapterView<?> parent,
-                                    View v, int position, long id)
-            {
+            public void onItemClick(AdapterView<?> parent,View v, int position, long id) {
                 boolean disponible = comprovaDisponible((CustomImageView)v);
                 //Toast.makeText(getBaseContext(), "Imatge " + (position + 1) + " seleccionada", Toast.LENGTH_SHORT).show();
                 //Toast.makeText(getBaseContext(), String.valueOf(disponible), Toast.LENGTH_SHORT).show();
                 System.out.println(disponible);
-
                 ImageView invisible = (ImageView)parent.getChildAt(8);
-
                 if (disponible){
                     float xActual = v.getX();
                     float yActual = v.getY();
@@ -123,19 +121,7 @@ public class PuzzleActivity extends AppCompatActivity implements View.OnTouchLis
                     int posicioAuxiliar = ((CustomImageView) v).getPosicioActual();
                     ((CustomImageView) v).setPosicioActual(posicioInvisible);
                     posicioInvisible = posicioAuxiliar;
-                    switch (moveSound){
-                        case 1:
-                            mService.playMoveSound();
-                            moveSound = 2;
-                        break;
-
-                        case 2:
-                            mService.playMoveSound2();
-                            moveSound = 1;
-                         break;
-
-                    }
-
+                    mService.playMoveSound();
                 }
                 System.out.println("POSICIO ACTUAL: " + ((CustomImageView) v).getPosicioActual() + " POSICIO CORRECTE: " + ((CustomImageView) v).getPosicioCorrecte());
                 System.out.println("POSICIO INVISIBLE: " + posicioInvisible);
@@ -163,19 +149,7 @@ public class PuzzleActivity extends AppCompatActivity implements View.OnTouchLis
                 int posicioAuxiliar = ((CustomImageView) v).getPosicioActual();
                 ((CustomImageView) v).setPosicioActual(posicioInvisible);
                 posicioInvisible = posicioAuxiliar;
-                switch (moveSound){
-                    case 1:
-                        mService.playMoveSound();
-                        moveSound = 2;
-                        break;
-
-                    case 2:
-                        mService.playMoveSound2();
-                        moveSound = 1;
-                        break;
-
-                }
-
+                mService.playMoveSound();
                 comprovaSolucio();
 
                 return true;
@@ -213,16 +187,6 @@ public class PuzzleActivity extends AppCompatActivity implements View.OnTouchLis
 
     }
 
-    /*
-    @Override
-    public void onClick(View v) {
-        if (solucio.getVisibility() == View.GONE){
-            solucio.setVisibility(View.VISIBLE);
-        } else {
-            solucio.setVisibility(View.GONE);
-        }
-    }
-    */
 
 
     @Override
@@ -269,7 +233,7 @@ public class PuzzleActivity extends AppCompatActivity implements View.OnTouchLis
             CustomImageView imageView;
             if (convertView == null) {
                 imageView = new CustomImageView(context, position);
-                imageView.setLayoutParams(new GridView.LayoutParams(410, 410));
+                imageView.setLayoutParams(new GridView.LayoutParams(300, 300));
                 imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
                 imageView.setPadding(10, 10, 10, 10);
             } else {
@@ -291,7 +255,6 @@ public class PuzzleActivity extends AppCompatActivity implements View.OnTouchLis
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu, menu);
         this.menuOnRestart = menu;
-        if(PrincipalActivity.checkMusic()){menuOnRestart.getItem(0).setIcon(R.drawable.mute);}
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -374,9 +337,10 @@ public class PuzzleActivity extends AppCompatActivity implements View.OnTouchLis
     @Override
     public void onBackPressed() {
         mService.setPosition();
-        Intent intent = new Intent(this, PrincipalActivity.class);
-        startActivity(intent);
+        mService.stop();
+        finish();
     }
+
 
     private AudioManager.OnAudioFocusChangeListener mAudioFocusListener = new AudioManager.OnAudioFocusChangeListener() {
         public void onAudioFocusChange(int focusChange) {
@@ -384,11 +348,12 @@ public class PuzzleActivity extends AppCompatActivity implements View.OnTouchLis
             switch (focusChange) {
                 case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT:
                 case AudioManager.AUDIOFOCUS_LOSS:
-                    if (mService.isPlating()){mService.stop();}
+                    if (mService.isPlating()){mService.stop();mService.playMoveSound();}
                     break;
 
                 case AudioManager.AUDIOFOCUS_GAIN:
                     mService.play();
+                    mService.playMoveSound();
                     break;
             }
         }

@@ -16,7 +16,6 @@ public class BackgroundMusicService extends IntentService implements  MediaPlaye
     private String LOG = "dam2.fje.edu.npuzzle_gimenez_colomo";
     MediaPlayer musicaFons ;
     MediaPlayer moveSound;
-    MediaPlayer moveSound2;
     static  MediaPlayer mp;
     static int currPosition = 0;
     IBinder iBinder = new LocalBinder();
@@ -25,11 +24,9 @@ public class BackgroundMusicService extends IntentService implements  MediaPlaye
 
     public IBinder onBind(Intent arg0) {
         moveSound = MediaPlayer.create(this, R.raw.move);
-        moveSound2= MediaPlayer.create(this, R.raw.move2);
         musicaFons = MediaPlayer.create(this, R.raw.backgroundsound);
         musicaFons.setLooping(true);
         moveSound.setVolume(100,100);
-        moveSound2.setVolume(100,100);
         musicaFons.setVolume(100, 100);
         musicaFons.setOnPreparedListener(this);
         musicaFons.seekTo(currPosition);
@@ -49,7 +46,7 @@ public class BackgroundMusicService extends IntentService implements  MediaPlaye
     public  void stop(){musicaFons.pause();}
 
     public  void playMoveSound(){moveSound.start();}
-    public  void playMoveSound2(){moveSound2.start();}
+    public  void stopMoveSound(){moveSound.reset();}
 
     public  void setPosition(){musicaFons.stop();currPosition = musicaFons.getCurrentPosition()+1;}
 

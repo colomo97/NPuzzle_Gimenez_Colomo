@@ -27,19 +27,16 @@
     <fragment
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:name="dam2.fje.edu.npuzzle_gimenez_colomo.View.PrincipalFragment"
         android:id="@+id/fragment"
         tools:layout="@layout/fragments_layout"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true" />
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:srcCompat="@drawable/solucio"
-        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:id="@+id/imageSolucio"
         android:layout_alignBottom="@+id/fragment"
         android:layout_alignParentStart="true"
-        android:background="@color/colorPrimaryDark" />
+        android:layout_height="400dp" />
 
 </RelativeLayout>

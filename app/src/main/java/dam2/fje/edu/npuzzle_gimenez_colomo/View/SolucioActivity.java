@@ -26,6 +26,7 @@ public class SolucioActivity extends AppCompatActivity{
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu, menu);
         menu.removeItem(R.id.item_sound);
+        menu.removeItem(R.id.item_settings);
         return super.onCreateOptionsMenu(menu);
     }
 

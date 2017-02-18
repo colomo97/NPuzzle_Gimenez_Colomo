@@ -30,7 +30,8 @@
         android:id="@+id/fragment"
         tools:layout="@layout/fragments_layout"
         android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:name="dam2.fje.edu.npuzzle_gimenez_colomo.View.PrincipalFragment"/>
 
     <ImageView
         android:layout_width="match_parent"

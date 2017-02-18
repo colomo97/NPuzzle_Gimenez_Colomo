@@ -23,7 +23,7 @@
             android:configChanges="orientation"
             android:screenOrientation="portrait"/>
 
-        <activity android:name=".View.SolucioActivity" android:parentActivityName=".View.PuzzleActivity"
+        <activity android:name=".View.SolucioActivity" android:parentActivityName=".View.PrincipalActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"/>
 

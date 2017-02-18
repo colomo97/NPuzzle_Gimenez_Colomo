@@ -44,7 +44,6 @@ import dam2.fje.edu.npuzzle_gimenez_colomo.Controller.BackgroundMusicService;
 import dam2.fje.edu.npuzzle_gimenez_colomo.R;
 
 public class PuzzleActivity extends AppCompatActivity implements View.OnTouchListener{
-    PuzzleActivity(){}
     Integer[] imageIDs = {R.drawable.img01, R.drawable.img02,R.drawable.img03,R.drawable.img04,R.drawable.img05,R.drawable.img06,R.drawable.img07,R.drawable.img08, R.drawable.img09};
     ImageView solucio;
     Button btnSolucio;
@@ -59,11 +58,12 @@ public class PuzzleActivity extends AppCompatActivity implements View.OnTouchLis
     boolean firstTime = true;
     boolean mBound = false;
     static Menu menuOnRestart;
-    /**
-    Bitmap originalBm = BitmapFactory.decodeFile("fileUrl"); // Let's say this bitmap is 300 x 600 pixels
+    Bitmap originalBm;
+    Bitmap[] positionsBitmaps = new Bitmap[9];
+    /*
     Bitmap bm1 = Bitmap.createBitmap(originalBm, 0, 0, originalBm.getWidth(), (originalBm.getHeight() / 2));
     Bitmap bm2 = Bitmap.createBitmap(originalBm, 0, (originalBm.getHeight() / 2), originalBm.getWidth(), (originalBm.getHeight() / 2));
-     */
+    */
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -90,11 +90,31 @@ public class PuzzleActivity extends AppCompatActivity implements View.OnTouchLis
         //Toast.makeText(this, "x: " + String.valueOf(width) + "; y: " + String.valueOf(height), Toast.LENGTH_SHORT).show();
         btnSolucio = (Button) findViewById(R.id.btnSolucio);
         btnSolucio.setOnTouchListener(this);
+        originalBm = PrincipalActivity.getBitmap();
         solucio = (ImageView) findViewById(R.id.imageSolucio);
-        solucio.setImageBitmap(PrincipalActivity.getBitmap());
+        solucio.setImageBitmap(originalBm);
         solucio.setBackgroundColor(Color.BLACK);
         solucio.setVisibility(View.GONE);
 
+        Bitmap scaledBitmap = Bitmap.createScaledBitmap(originalBm, 240, 240, true);
+        positionsBitmaps[0] = Bitmap.createBitmap(scaledBitmap, 0, 0, 80 , 80);
+        positionsBitmaps[1] = Bitmap.createBitmap(scaledBitmap, 80, 0, 80, 80);
+        positionsBitmaps[2] = Bitmap.createBitmap(scaledBitmap,160, 0, 80,80);
+        positionsBitmaps[3] = Bitmap.createBitmap(scaledBitmap, 0, 80, 80, 80);
+        positionsBitmaps[4] = Bitmap.createBitmap(scaledBitmap, 80, 80, 80,80);
+        positionsBitmaps[5] = Bitmap.createBitmap(scaledBitmap, 160, 80,80,80);
+        positionsBitmaps[6] = Bitmap.createBitmap(scaledBitmap, 0, 160, 80,80);
+        positionsBitmaps[7] = Bitmap.createBitmap(scaledBitmap, 80, 160,80,80);
+        positionsBitmaps[8] = Bitmap.createBitmap(scaledBitmap, 160,160,80,80);
+
+        /*
+        for(int i = 2;i<=11;i++){
+            int x = 0;
+            positionsBitmap.Bitmap.createBitmap(originalBm, 0, (originalBm.getHeight() / i), originalBm.getWidth(), (originalBm.getHeight() / i)));
+            positionsBitmap.add(Bitmap.createBitmap(originalBm, 0, 0, originalBm.getWidth(), (originalBm.getHeight() / i)));
+            x++;
+        }
+        */
 
         grid = (GridView) findViewById(R.id.gridview);
         im = new ImageAdapter(this);
@@ -245,7 +265,7 @@ public class PuzzleActivity extends AppCompatActivity implements View.OnTouchLis
 
             imageView.setPosicioCorrecte(posicionsAleatoriesList.get(position));
             imageView.setPosicioActual(position);
-            imageView.setImageResource(imageIDs[posicionsAleatoriesList.get(position)]);
+            imageView.setImageBitmap(positionsBitmaps[posicionsAleatoriesList.get(position)]);
             return imageView;
         }
     }

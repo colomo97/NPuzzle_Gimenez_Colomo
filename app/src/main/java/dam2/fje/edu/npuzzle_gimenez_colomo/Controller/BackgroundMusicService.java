@@ -27,7 +27,7 @@ public class BackgroundMusicService extends IntentService implements  MediaPlaye
         musicaFons = MediaPlayer.create(this, R.raw.backgroundsound);
         musicaFons.setLooping(true);
         moveSound.setVolume(100,100);
-        musicaFons.setVolume(100, 100);
+        musicaFons.setVolume(5, 5);
         musicaFons.setOnPreparedListener(this);
         musicaFons.seekTo(currPosition);
         return iBinder;

@@ -190,8 +190,12 @@ public class PuzzleActivity extends AppCompatActivity implements View.OnTouchLis
                 ((CustomImageView) v).setPosicioActual(posicioInvisible);
                 posicioInvisible = posicioAuxiliar;
                 mService.playMoveSound();
+                System.out.println("POSICIO ACTUAL: " + ((CustomImageView) v).getPosicioActual() + " POSICIO CORRECTE: " + ((CustomImageView) v).getPosicioCorrecte());
+                System.out.println("POSICIO INVISIBLE: " + posicioInvisible);
+                if (((CustomImageView) v).getPosicioActual() == ((CustomImageView) v).getPosicioCorrecte()){
+                    Toast.makeText(getApplicationContext(), "Posicio correcte: " + ((CustomImageView) v).getPosicioActual(), Toast.LENGTH_SHORT).show();
+                }
                 comprovaSolucio();
-
                 return true;
             }
         });

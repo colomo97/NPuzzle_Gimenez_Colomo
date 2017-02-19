@@ -14,7 +14,7 @@
 
 
     <TextView
-        android:text="\nBenvinguts a l’aplicació de NPUZZLE.\nSi us plau, seleccioneu una imatge fent click al icona de sota i després podeu iniciar el PUZZLE."
+        android:text="\nBenvinguts a l’aplicació de NPuzzle.\n"
         android:layout_gravity="center_vertical|right"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -22,7 +22,8 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
         android:clickable="false"
-        android:textAllCaps="false" />
+        android:textSize="18sp"
+        android:textStyle="bold|italic" />
 
     <Button
         android:id="@+id/bStart"
@@ -43,15 +44,6 @@
         android:layout_alignParentBottom="true"
         android:layout_toStartOf="@+id/bStart" />
 
-    <ImageView
-        android:layout_height="match_parent"
-        android:id="@+id/biblioImage"
-        android:layout_marginTop="93dp"
-        android:layout_below="@+id/txtPresApp"
-        android:layout_alignParentStart="true"
-        android:layout_width="200dp"
-        android:layout_gravity="center"/>
-
     <TextView
         android:text="Imatge seleccionada:"
         android:layout_width="wrap_content"
@@ -61,5 +53,22 @@
         android:layout_below="@+id/txtPresApp"
         android:layout_alignParentStart="true"
         android:textStyle="normal|bold" />
+
+    <TextView
+        android:text="Si us plau, seleccioneu una imatge fent click al icona de sota i després podeu iniciar el PUZZLE."
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtPresApp2"
+        android:layout_below="@+id/txtPresApp"
+        android:layout_alignParentStart="true" />
+
+    <ImageView
+        android:layout_height="match_parent"
+        android:id="@+id/biblioImage"
+        android:layout_width="200dp"
+        android:layout_gravity="center"
+        android:layout_below="@+id/txtImatge"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="20dp" />
 
 </RelativeLayout>

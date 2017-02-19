@@ -27,8 +27,8 @@ import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.view.Window;
 import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.animation.LinearInterpolator;
-import android.view.animation.RotateAnimation;
 import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -51,7 +51,7 @@ import dam2.fje.edu.npuzzle_gimenez_colomo.Controller.BackgroundMusicService;
 import dam2.fje.edu.npuzzle_gimenez_colomo.R;
 
 public class PuzzleActivity extends AppCompatActivity implements View.OnTouchListener{
-
+    Integer[] imageIDs = {R.drawable.img01, R.drawable.img02,R.drawable.img03,R.drawable.img04,R.drawable.img05,R.drawable.img06,R.drawable.img07,R.drawable.img08, R.drawable.img09};
     ImageView solucio;
     Button btnSolucio;
     GridView grid;
@@ -72,6 +72,7 @@ public class PuzzleActivity extends AppCompatActivity implements View.OnTouchLis
     static Menu menuOnRestart;
     Bitmap originalBm;
     Bitmap[] positionsBitmaps = new Bitmap[9];
+    Animation shake;
     TranslateAnimation anim;
     TranslateAnimation anim2;
 
@@ -123,6 +124,8 @@ public class PuzzleActivity extends AppCompatActivity implements View.OnTouchLis
         positionsBitmaps[6] = Bitmap.createBitmap(scaledBitmap, 0, 160, 80,80);
         positionsBitmaps[7] = Bitmap.createBitmap(scaledBitmap, 80, 160,80,80);
         positionsBitmaps[8] = Bitmap.createBitmap(scaledBitmap, 160,160,80,80);
+
+        shake = AnimationUtils.loadAnimation(this, R.anim.shake);
 
         /*
         for(int i = 2;i<=11;i++){
@@ -342,6 +345,13 @@ public class PuzzleActivity extends AppCompatActivity implements View.OnTouchLis
             imageView.setPosicioCorrecte(posicionsAleatoriesList.get(position));
             imageView.setPosicioActual(position);
             imageView.setImageBitmap(positionsBitmaps[posicionsAleatoriesList.get(position)]);
+
+            if(position==8){
+                imageView.setVisibility(View.GONE);
+            } else{
+                imageView.startAnimation(shake);
+            }
+
             return imageView;
         }
     }

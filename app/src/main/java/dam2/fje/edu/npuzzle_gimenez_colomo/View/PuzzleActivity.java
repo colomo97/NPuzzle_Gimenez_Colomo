@@ -51,7 +51,7 @@ import dam2.fje.edu.npuzzle_gimenez_colomo.Controller.BackgroundMusicService;
 import dam2.fje.edu.npuzzle_gimenez_colomo.R;
 
 public class PuzzleActivity extends AppCompatActivity implements View.OnTouchListener{
-    Integer[] imageIDs = {R.drawable.img01, R.drawable.img02,R.drawable.img03,R.drawable.img04,R.drawable.img05,R.drawable.img06,R.drawable.img07,R.drawable.img08, R.drawable.img09};
+    //Integer[] imageIDs = {R.drawable.img01, R.drawable.img02,R.drawable.img03,R.drawable.img04,R.drawable.img05,R.drawable.img06,R.drawable.img07,R.drawable.img08, R.drawable.img09};
     ImageView solucio;
     Button btnSolucio;
     GridView grid;
@@ -75,6 +75,7 @@ public class PuzzleActivity extends AppCompatActivity implements View.OnTouchLis
     Animation shake;
     TranslateAnimation anim;
     TranslateAnimation anim2;
+    int numMoviments = 0 ;
 
 
     @Override
@@ -162,6 +163,7 @@ public class PuzzleActivity extends AppCompatActivity implements View.OnTouchLis
                     ((CustomImageView) v).setPosicioActual(posicioInvisible);
                     posicioInvisible = posicioAuxiliar;
                     mService.playMoveSound();
+                    numMoviments++;
                 }
                 System.out.println("POSICIO ACTUAL: " + ((CustomImageView) v).getPosicioActual() + " POSICIO CORRECTE: " + ((CustomImageView) v).getPosicioCorrecte());
                 System.out.println("POSICIO INVISIBLE: " + posicioInvisible);
@@ -212,6 +214,7 @@ public class PuzzleActivity extends AppCompatActivity implements View.OnTouchLis
         if (totsSolucionats==8){
             //Toast.makeText(getApplicationContext(), "Molt Bé! Puzzle Solucionat!", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(this, SolucioActivity.class);
+            intent.putExtra("movements", numMoviments);
             startActivity(intent);
         }
     }

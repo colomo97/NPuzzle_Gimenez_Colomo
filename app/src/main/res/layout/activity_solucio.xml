@@ -16,6 +16,15 @@
 
     <TextView
         style="@style/tvSolucio"
-        android:text="Molt bé! Has solucionat el puzzle correctament!"
+        android:text="Molt bé! Has solucionat el puzzle correctament!\n\nNombre de moviments:"
         android:id="@+id/tvSolucionat" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/imageView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="14dp"
+        android:textSize="22sp"
+        android:id="@+id/tvNumMoviments" />
 </RelativeLayout>

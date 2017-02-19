@@ -6,6 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import dam2.fje.edu.npuzzle_gimenez_colomo.Controller.BackgroundMusicService;
 import dam2.fje.edu.npuzzle_gimenez_colomo.R;
@@ -15,10 +17,15 @@ import dam2.fje.edu.npuzzle_gimenez_colomo.R;
  */
 
 public class SolucioActivity extends AppCompatActivity{
+    int numMoviments;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_solucio);
+        Intent intent = getIntent();
+        numMoviments = intent.getIntExtra("movements", 0);
+        TextView tvNumMoviments = (TextView) findViewById(R.id.tvNumMoviments);
+        tvNumMoviments.setText(String.valueOf(numMoviments));
     }
 
     @Override

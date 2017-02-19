@@ -9,6 +9,8 @@ import android.content.ServiceConnection;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Point;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.content.Context;
@@ -24,11 +26,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.view.Window;
+import android.view.animation.Animation;
+import android.view.animation.LinearInterpolator;
+import android.view.animation.RotateAnimation;
+import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.ImageSwitcher;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -44,7 +51,7 @@ import dam2.fje.edu.npuzzle_gimenez_colomo.Controller.BackgroundMusicService;
 import dam2.fje.edu.npuzzle_gimenez_colomo.R;
 
 public class PuzzleActivity extends AppCompatActivity implements View.OnTouchListener{
-    Integer[] imageIDs = {R.drawable.img01, R.drawable.img02,R.drawable.img03,R.drawable.img04,R.drawable.img05,R.drawable.img06,R.drawable.img07,R.drawable.img08, R.drawable.img09};
+
     ImageView solucio;
     Button btnSolucio;
     GridView grid;
@@ -52,6 +59,11 @@ public class PuzzleActivity extends AppCompatActivity implements View.OnTouchLis
     ImageAdapter im;
     ViewParent pare;
     List<Integer> posicionsAleatoriesList;
+    ImageView entrada;
+    ImageView sortida;
+    Button carrousel;
+    int i = 0;
+    int x = 1;
     int posicioInvisible = 8;
     boolean checkmService;
     boolean imageSelector = true;
@@ -60,10 +72,9 @@ public class PuzzleActivity extends AppCompatActivity implements View.OnTouchLis
     static Menu menuOnRestart;
     Bitmap originalBm;
     Bitmap[] positionsBitmaps = new Bitmap[9];
-    /*
-    Bitmap bm1 = Bitmap.createBitmap(originalBm, 0, 0, originalBm.getWidth(), (originalBm.getHeight() / 2));
-    Bitmap bm2 = Bitmap.createBitmap(originalBm, 0, (originalBm.getHeight() / 2), originalBm.getWidth(), (originalBm.getHeight() / 2));
-    */
+    TranslateAnimation anim;
+    TranslateAnimation anim2;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -73,6 +84,12 @@ public class PuzzleActivity extends AppCompatActivity implements View.OnTouchLis
         bindService(svc, mConnection, Context.BIND_AUTO_CREATE);
         checkmService = true;
 
+        anim = new TranslateAnimation(-1000, 900, 0, 0);
+        anim2 = new TranslateAnimation(-1000, 900, 0, 0);
+        carrousel = (Button) findViewById(R.id.btnCarrousel);
+        carrousel.setOnTouchListener(this);
+        entrada = (ImageView) findViewById(R.id.carrouselEntrada);
+        sortida = (ImageView) findViewById(R.id.carrouselSortida);
 
 
         //Creacio aleatoris
@@ -213,12 +230,71 @@ public class PuzzleActivity extends AppCompatActivity implements View.OnTouchLis
     public boolean onTouch(View v, MotionEvent event) {
 
         switch (event.getAction()){
+
             case MotionEvent.ACTION_DOWN:
-                solucio.setVisibility(View.VISIBLE);
+                if(v == btnSolucio) {
+                    solucio.setVisibility(View.VISIBLE);
+                }
+                else if(v == carrousel){
+                    anim.setInterpolator(new LinearInterpolator());
+                    anim.setRepeatCount(Animation.INFINITE);
+                    anim.setDuration(1500);
+                    ///////////////////////////////////////////////
+                    anim2.setInterpolator(new LinearInterpolator());
+                    anim2.setRepeatCount(Animation.INFINITE);
+                    anim2.setDuration(1500);
+
+                    entrada.startAnimation(anim);
+                    sortida.setAnimation(anim2);
+                    anim.setAnimationListener(new Animation.AnimationListener() {
+                        @Override
+                        public void onAnimationStart(Animation animation) {
+                            entrada.setImageBitmap(positionsBitmaps[i]);
+                            anim.reset();
+                        }
+
+                        @Override
+                        public void onAnimationEnd(Animation animation) {}
+
+                        @Override
+                        public void onAnimationRepeat(Animation animation) {
+                            if(i==8){i=0;}
+                                else{i +=2;}
+                            entrada.setImageBitmap(positionsBitmaps[i]);
+                        }
+                    });
+                    anim2.setAnimationListener(new Animation.AnimationListener() {
+                        @Override
+                        public void onAnimationStart(Animation animation) {
+                            sortida.setImageBitmap(positionsBitmaps[x]);
+                            anim.reset();
+                        }
+
+                        @Override
+                        public void onAnimationEnd(Animation animation) {}
+
+                        @Override
+                        public void onAnimationRepeat(Animation animation) {
+                            if(x==7){x=1;}
+                            else{x+=2;}
+                            sortida.setImageBitmap(positionsBitmaps[x]);
+                        }
+                    });
+                }
+
                 break;
             case MotionEvent.ACTION_UP:
-                solucio.setVisibility(View.GONE);
+                if(v==btnSolucio) {
+                    solucio.setVisibility(View.GONE);
+                }
+                else if(v==carrousel){
+                entrada.setVisibility(View.GONE);
+                entrada.setAnimation(null);
+                sortida.setVisibility(View.GONE);
+                sortida.setAnimation(null);
+            }
                 break;
+
         }
 
 
@@ -235,7 +311,7 @@ public class PuzzleActivity extends AppCompatActivity implements View.OnTouchLis
 
         //---returns the number of images---
         public int getCount() {
-            return imageIDs.length;
+            return positionsBitmaps.length;
         }
 
         //---returns the ID of an item---

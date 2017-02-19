@@ -19,6 +19,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".View.DisplayWebView" android:parentActivityName=".View.PrincipalActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
+
         <activity android:name=".View.PuzzleActivity" android:parentActivityName=".View.PrincipalActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"/>

@@ -13,7 +13,6 @@ import dam2.fje.edu.npuzzle_gimenez_colomo.R;
  * Created by miquel on 2/15/2017.
  */
 
-
 public class PrincipalFragment extends Fragment {
 
     @Override

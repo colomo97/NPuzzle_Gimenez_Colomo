@@ -368,6 +368,7 @@ public class PuzzleActivity extends AppCompatActivity implements View.OnTouchLis
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu, menu);
         this.menuOnRestart = menu;
+        menuOnRestart.removeItem(R.id.item_ajuda);
         return super.onCreateOptionsMenu(menu);
     }
 

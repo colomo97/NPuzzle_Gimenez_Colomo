@@ -6,6 +6,9 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -81,6 +84,27 @@ public class PrincipalActivity extends AppCompatActivity implements View.OnClick
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu, menu);
+        menu.removeItem(R.id.item_sound);
+        menu.removeItem(R.id.item_settings);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.item_ajuda:
+                Intent intent = new Intent(this, DisplayWebView.class);
+                startActivity(intent);
+
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 

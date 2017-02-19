@@ -6,7 +6,6 @@ import android.widget.ImageView;
 /**
  * Created by David on 16/02/2017.
  */
-//PUSH
 public class CustomImageView extends ImageView {
     int posicioActual, posicioCorrecte;
 

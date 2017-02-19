@@ -34,6 +34,7 @@ public class SolucioActivity extends AppCompatActivity{
         inflater.inflate(R.menu.menu, menu);
         menu.removeItem(R.id.item_sound);
         menu.removeItem(R.id.item_settings);
+        menu.removeItem(R.id.item_ajuda);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -46,6 +47,7 @@ public class SolucioActivity extends AppCompatActivity{
 
             default:
                 return super.onOptionsItemSelected(item);
+
         }
     }
 }
